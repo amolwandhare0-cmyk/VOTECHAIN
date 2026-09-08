@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VoteChain | G H Raisoni University — Decentralized Voting System</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗳️</text></svg>"/>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">🗳️</div>
+      <div class="nav-brand-text">
+        <div class="name">VoteChain</div>
+        <div class="sub">GH Raisoni University</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="results.html">Live Results</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+      <a href="login.html" class="btn btn-gold btn-sm">🗳️ Vote Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner container">
+
+    <!-- Left -->
+    <div class="anim-up">
+      <div class="hero-eyebrow">
+        <span class="live-dot"></span>
+        Election 2025 — Voting is Live
+      </div>
+      <h1 class="hero-title display-title">
+        The Future of<br/>
+        <span class="gradient-text">Democratic Voting</span><br/>
+        at GH Raisoni
+      </h1>
+      <p class="hero-desc">
+        G H Raisoni University's official blockchain-powered election platform. Transparent, tamper-proof, and secure. Every vote is an immutable transaction — verified by the community.
+      </p>
+      <div class="hero-cta">
+        <a href="login.html" class="btn btn-gold btn-xl">🗳️ Cast Your Vote</a>
+        <a href="results.html" class="btn btn-outline btn-xl">📊 Live Results</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hstat-num" id="heroVotes">3,500</div>
+          <div class="hstat-label">Registered Students</div>
+        </div>
+        <div>
+          <div class="hstat-num">100%</div>
+          <div class="hstat-label">Transparent</div>
+        </div>
+        <div>
+          <div class="hstat-num">0</div>
+          <div class="hstat-label">Fraud Risk</div>
+        </div>
+        <div>
+          <div class="hstat-num">3</div>
+          <div class="hstat-label">Active Elections</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right — Blockchain visual -->
+    <div class="blockchain-panel anim-up delay-2">
+      <div class="bc-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.1rem;">⛓️</span>
+          <div>
+            <div style="font-size:0.85rem;font-weight:700;">Blockchain Ledger</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Ethereum Sepolia Testnet</div>
+          </div>
+        </div>
+        <span class="badge badge-success"><span class="live-dot"></span> Live</span>
+      </div>
+      <div class="bc-block">
+        <div class="bc-block-icon">🔗</div>
+        <div style="flex:1;">
+          <div class="bc-data">Genesis Block</div>
+          <div class="bc-hash">0x0000...a1b2c3d4 · Block #19,284,000</div>
+        </div>
+        <span class="badge badge-success">Verified</span>
+      </div>
+      <div class="bc-connector"></div>
+      <div class="bc-block">
+        <div class="bc-block-icon">🗳️</div>
+        <div style="flex:1;">
+          <div class="bc-data">Vote Cast — GHRCEM-CS-2022-031</div>
+          <div class="bc-hash">0x4f7e...d9c1 · Block #19,284,749</div>
+        </div>
+        <span class="badge badge-success">Confirmed</span>
+      </div>
+      <div class="bc-connector"></div>
+      <div class="bc-block">
+        <div class="bc-block-icon">🗳️</div>
+        <div style="flex:1;">
+          <div class="bc-data">Vote Cast — GHRCEM-EE-2022-044</div>
+          <div class="bc-hash">0x9b2a...f034 · Block #19,284,751</div>
+        </div>
+        <span class="badge badge-success">Confirmed</span>
+      </div>
+      <div class="bc-connector"></div>
+      <div class="bc-block">
+        <div class="bc-block-icon">⏳</div>
+        <div style="flex:1;">
+          <div class="bc-data">Pending Transaction...</div>
+          <div class="bc-hash">0x????...???? · Awaiting confirmation</div>
+        </div>
+        <span class="badge badge-warning">Pending</span>
+      </div>
+      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);">
+        <span>Gas: 12 Gwei</span>
+        <span id="heroBlock">Block: 19,284,751</span>
+        <span style="color:var(--success);">● All systems operational</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── UNIVERSITY BANNER ──────────────────────────── -->
+<div style="background:var(--ghr-maroon-deep);border-top:1px solid rgba(201,162,39,0.2);border-bottom:1px solid rgba(201,162,39,0.2);padding:1.5rem 2rem;">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="font-size:2.5rem;">🏛️</div>
+      <div>
+        <div style="font-size:1.05rem;font-weight:800;color:var(--ghr-gold);">G H Raisoni University</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.6);">Official Student Election Portal · Academic Year 2026–27</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:1.3rem;font-weight:900;color:var(--ghr-gold);">3,500+</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;">Students</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:1.3rem;font-weight:900;color:var(--ghr-gold);">12+</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;">Departments</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:1.3rem;font-weight:900;color:var(--ghr-gold);">3</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;">Live Elections</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:1.3rem;font-weight:900;color:var(--ghr-gold);">100%</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;">Blockchain Secured</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ───────────────────────────────────── -->
+<section id="features" style="padding:5rem 2rem;background:var(--bg-surface);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">✨ Platform Features</div>
+      <h2>Why VoteChain?</h2>
+      <p>Built exclusively for G H Raisoni University with enterprise-grade blockchain security and a student-first experience.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card anim-up">
+        <div class="feature-icon">🔐</div>
+        <h3>Cryptographic Security</h3>
+        <p>Each vote is SHA-256 encrypted and written as a signed blockchain transaction. No one — not even administrators — can alter a cast vote.</p>
+      </div>
+      <div class="feature-card anim-up delay-1">
+        <div class="feature-icon">👁️</div>
+        <h3>Full Transparency</h3>
+        <p>Every vote is publicly verifiable on the blockchain while maintaining complete voter anonymity. Anyone can audit results in real time.</p>
+      </div>
+      <div class="feature-card anim-up delay-2">
+        <div class="feature-icon">🎓</div>
+        <h3>Student Identity Verification</h3>
+        <p>Login with your GHRCEM ID. Smart contracts enforce a strict one-vote-per-student rule. Double voting is technically impossible.</p>
+      </div>
+      <div class="feature-card anim-up delay-3">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Results</h3>
+        <p>Watch vote tallies update live with beautiful charts and progress bars as ballots are cast and confirmed on-chain.</p>
+      </div>
+      <div class="feature-card anim-up">
+        <div class="feature-icon">🌐</div>
+        <h3>Decentralized Architecture</h3>
+        <p>No single point of failure or control. The voting data is distributed — no central authority can manipulate outcomes.</p>
+      </div>
+      <div class="feature-card anim-up delay-1">
+        <div class="feature-icon">📱</div>
+        <h3>Vote from Any Device</h3>
+        <p>Fully responsive design. Vote from your phone, tablet, or laptop. No app download required — works in any modern browser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────── -->
+<section id="how-it-works" style="padding:5rem 2rem;">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">📋 The Process</div>
+      <h2>How It Works</h2>
+      <p>Four simple steps from login to verified vote — completed in under 60 seconds.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card anim-up">
+        <div class="step-num">1</div>
+        <h3>Login with GHRCEM ID</h3>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">Authenticate using your college student ID and email. The system verifies your eligibility automatically.</p>
+      </div>
+      <div class="step-card anim-up delay-1">
+        <div class="step-num">2</div>
+        <h3>Browse Candidates</h3>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">View all candidates, their manifesto, department, and the position they're contesting. Make an informed decision.</p>
+      </div>
+      <div class="step-card anim-up delay-2">
+        <div class="step-num">3</div>
+        <h3>Cast Your Vote</h3>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">Select your candidate and confirm. Your encrypted vote is submitted as a signed transaction to the blockchain.</p>
+      </div>
+      <div class="step-card anim-up delay-3">
+        <div class="step-num">4</div>
+        <h3>Get Your Proof</h3>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">Receive a unique transaction hash as permanent proof. Verify your vote was counted at any time using the Results page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECURITY SECTION ───────────────────────────── -->
+<section style="padding:5rem 2rem;background:var(--bg-surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+      <div>
+        <div class="section-eyebrow" style="text-align:left;">🛡️ Security</div>
+        <h2 style="margin:1rem 0;">Built for<br/><span class="gradient-text">Trust & Integrity</span></h2>
+        <p style="margin-bottom:2rem;">Multiple layers of protection ensure the GH Raisoni election process is beyond reproach.</p>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:1rem;background:var(--bg-elevated);border-radius:var(--r-md);border:1px solid var(--border);">
+            <span style="font-size:1.3rem;">🔑</span>
+            <div><h4 style="margin-bottom:3px;">End-to-End Encryption</h4><p style="font-size:0.82rem;">Votes are encrypted on your device before transmission. Even server logs cannot reveal who you voted for.</p></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:1rem;background:var(--bg-elevated);border-radius:var(--r-md);border:1px solid var(--border);">
+            <span style="font-size:1.3rem;">⛓️</span>
+            <div><h4 style="margin-bottom:3px;">Immutable Record</h4><p style="font-size:0.82rem;">Once written to the blockchain, no vote can ever be changed, deleted, or overwritten. The ledger is permanent.</p></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:1rem;background:var(--bg-elevated);border-radius:var(--r-md);border:1px solid var(--border);">
+            <span style="font-size:1.3rem;">🚫</span>
+            <div><h4 style="margin-bottom:3px;">Double-Vote Prevention</h4><p style="font-size:0.82rem;">Smart contracts automatically reject any attempt to vote more than once per student per election. It is technically impossible.</p></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-hover);border-radius:var(--r-xl);padding:2rem;text-align:center;">
+          <div style="font-size:3rem;margin-bottom:1rem;">⛓️</div>
+          <div style="font-size:2.5rem;font-weight:900;color:var(--ghr-gold);margin-bottom:0.5rem;" id="secBlock">19,284,751</div>
+          <div class="label-xs">Current Block Height</div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span style="color:var(--text-muted);">Network</span><span style="font-weight:600;">Ethereum Sepolia</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span style="color:var(--text-muted);">Contract</span><span style="font-weight:600;font-family:monospace;font-size:0.75rem;color:var(--ghr-gold);">0x4f7e...d9c1</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span style="color:var(--text-muted);">Status</span><span class="badge badge-success" style="font-size:0.7rem;"><span class="live-dot"></span> Operational</span></div>
+          </div>
+        </div>
+        <a href="results.html" class="btn btn-gold btn-lg" style="justify-content:center;">📊 View Live Results →</a>
+        <a href="login.html"   class="btn btn-primary btn-lg" style="justify-content:center;">🗳️ Vote Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<section style="padding:6rem 2rem;text-align:center;">
+  <div class="container" style="max-width:680px;">
+    <div class="section-eyebrow" style="margin:0 auto 1rem;">🏛️ GH Raisoni University</div>
+    <h2 class="display-title" style="margin-bottom:1rem;">Your Vote Shapes<br/><span class="gradient-text">Our University</span></h2>
+    <p style="margin-bottom:2.5rem;font-size:1rem;">The Student Council election is live. Exercise your democratic right and choose the leaders who will represent GH Raisoni for 2026–27.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="login.html"  class="btn btn-gold btn-xl">🗳️ Vote Now</a>
+      <a href="admin.html"  class="btn btn-outline btn-xl">⚙️ Admin Panel</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-brand" style="margin-bottom:1rem;">
+        <div class="nav-logo">🗳️</div>
+        <div class="nav-brand-text"><div class="name">VoteChain</div><div class="sub">GH Raisoni University</div></div>
+      </div>
+      <p style="font-size:0.85rem;max-width:260px;">Secure, transparent, blockchain-powered student elections for G H Raisoni University. Academic Year 2026–27.</p>
+    </div>
+    <div>
+      <div class="label-xs" style="margin-bottom:1rem;">Platform</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="vote.html"   style="font-size:0.875rem;color:var(--text-muted);" onmouseover="this.style.color='var(--ghr-gold)'" onmouseout="this.style.color='var(--text-muted)'">🗳️ Cast Vote</a>
+        <a href="results.html"style="font-size:0.875rem;color:var(--text-muted);" onmouseover="this.style.color='var(--ghr-gold)'" onmouseout="this.style.color='var(--text-muted)'">📊 Live Results</a>
+        <a href="register.html" style="font-size:0.875rem;color:var(--text-muted);" onmouseover="this.style.color='var(--ghr-gold)'" onmouseout="this.style.color='var(--text-muted)'">📝 Register</a>
+        <a href="login.html"   style="font-size:0.875rem;color:var(--text-muted);" onmouseover="this.style.color='var(--ghr-gold)'" onmouseout="this.style.color='var(--text-muted)'">🔐 Student Login</a>
+        <a href="admin.html"  style="font-size:0.875rem;color:var(--text-muted);" onmouseover="this.style.color='var(--ghr-gold)'" onmouseout="this.style.color='var(--text-muted)'">⚙️ Admin Panel</a>
+      </div>
+    </div>
+    <div>
+      <div class="label-xs" style="margin-bottom:1rem;">Security</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Smart Contracts</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Audit Trail</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Verify My Vote</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Blockchain Explorer</a>
+      </div>
+    </div>
+    <div>
+      <div class="label-xs" style="margin-bottom:1rem;">University</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">About GH Raisoni</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Election Rules</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Contact Admin</a>
+        <a href="#" style="font-size:0.875rem;color:var(--text-muted);">Help & FAQ</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 VoteChain — G H Raisoni University. All rights reserved.</span>
+    <span>Powered by Ethereum Blockchain · Academic Year 2026–27</span>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="app.js"></script>
+<script>
+  // Animate block height
+  let bh = 19284751;
+  setInterval(() => {
+    bh++;
+    document.getElementById('heroBlock').textContent = 'Block: ' + bh.toLocaleString();
+    document.getElementById('secBlock').textContent  = bh.toLocaleString();
+  }, 4000);
+
+  // Animate hero vote count
+  let vc = 1248;
+  setInterval(() => {
+    if (Math.random() > 0.7) { vc++; document.getElementById('heroVotes').textContent = vc.toLocaleString(); }
+  }, 3000);
+</script>
+</body>
+</html>

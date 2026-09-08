@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | VoteChain — GH Raisoni University</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .otp-inputs{display:flex;gap:10px;justify-content:center;margin:1.25rem 0;}
+    .otp-box{width:50px;height:56px;background:var(--bg-elevated);border:2px solid var(--border);border-radius:var(--r-md);text-align:center;font-size:1.5rem;font-weight:900;color:var(--ghr-gold);font-family:'Courier New',monospace;outline:none;transition:var(--t-fast);}
+    .otp-box:focus{border-color:var(--ghr-gold);box-shadow:0 0 0 3px rgba(201,162,39,0.2);}
+    .otp-box.filled{border-color:var(--ghr-gold);background:rgba(201,162,39,0.06);}
+    .otp-box.shake{animation:shake 0.4s ease;border-color:var(--danger);}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .step-bar{display:flex;align-items:center;gap:6px;margin-bottom:1.5rem;}
+    .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;background:var(--bg-elevated);border:2px solid var(--border);color:var(--text-muted);flex-shrink:0;transition:var(--t-normal);}
+    .step-dot.active{background:var(--grad-brand);border-color:transparent;color:white;}
+    .step-dot.done{background:var(--success);border-color:transparent;color:white;}
+    .step-line{flex:1;height:2px;background:var(--border);border-radius:2px;transition:var(--t-normal);}
+    .step-line.done{background:var(--success);}
+    .countdown{text-align:center;font-size:0.78rem;color:var(--text-muted);margin-top:4px;}
+    .countdown span{color:var(--warning);font-weight:700;font-family:monospace;}
+  </style>
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- LEFT -->
+  <div class="auth-left">
+    <div class="auth-left-mesh"></div>
+    <div style="position:relative;z-index:1;text-align:center;max-width:380px;">
+      <div style="font-size:4rem;margin-bottom:1.5rem;">🏛️</div>
+      <h2 class="display-title" style="margin-bottom:1rem;"><span class="gradient-text">G H Raisoni</span><br/>University</h2>
+      <p style="font-size:0.95rem;color:var(--text-secondary);margin-bottom:2rem;line-height:1.7;">Official Student Election Portal<br/>Academic Year 2026–27</p>
+      <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:1.5rem;">
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--r-md);padding:11px 14px;">
+          <span style="font-size:1.1rem;">📧</span>
+          <div><div style="font-size:0.83rem;font-weight:600;">Real Gmail OTP</div><div style="font-size:0.72rem;color:var(--text-muted);">6-digit code sent to your Gmail</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--r-md);padding:11px 14px;">
+          <span style="font-size:1.1rem;">⛓️</span>
+          <div><div style="font-size:0.83rem;font-weight:600;">Blockchain Recorded</div><div style="font-size:0.72rem;color:var(--text-muted);">Every vote is immutable</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--r-md);padding:11px 14px;">
+          <span style="font-size:1.1rem;">🔐</span>
+          <div><div style="font-size:0.83rem;font-weight:600;">Secure & Private</div><div style="font-size:0.72rem;color:var(--text-muted);">Your vote stays anonymous</div></div>
+        </div>
+      </div>
+      <div style="padding:11px 14px;background:rgba(201,162,39,0.06);border:1px solid rgba(201,162,39,0.18);border-radius:var(--r-md);font-size:0.78rem;color:var(--text-muted);">
+        <span class="live-dot" style="margin-right:6px;"></span>
+        Election is <strong style="color:var(--success);">LIVE</strong> · Closes Jan 12, 2025 · 6:00 PM
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="auth-right">
+    <div style="max-width:410px;width:100%;margin:0 auto;">
+
+      <div class="nav-brand" style="margin-bottom:1.75rem;">
+        <div class="nav-logo">🗳️</div>
+        <div class="nav-brand-text"><div class="name">VoteChain</div><div class="sub">GH Raisoni University</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div style="display:flex;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:4px;gap:4px;margin-bottom:1.5rem;" id="tabBar">
+        <button id="t1" onclick="switchTab('login')"    class="tab-btn-active"   style="flex:1;padding:8px;background:var(--grad-brand);color:white;border:none;border-radius:var(--r-sm);font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;">🔐 Login</button>
+        <button id="t2" onclick="switchTab('register')" class="tab-btn-inactive" style="flex:1;padding:8px;background:none;color:var(--text-muted);border:none;border-radius:var(--r-sm);font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;">📝 Register</button>
+        <button id="t3" onclick="switchTab('admin')"    class="tab-btn-inactive" style="flex:1;padding:8px;background:none;color:var(--text-muted);border:none;border-radius:var(--r-sm);font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;">⚙️ Admin</button>
+      </div>
+
+      <!-- ══ LOGIN ══ -->
+      <div id="pLogin">
+        <h2 style="margin-bottom:0.2rem;">Welcome Back</h2>
+        <p style="margin-bottom:1.25rem;font-size:0.875rem;">Sign in with your registered Gmail</p>
+        <div id="loginErr" style="display:none;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:var(--r-md);padding:10px 14px;margin-bottom:1rem;font-size:0.82rem;color:var(--danger);"></div>
+        <div class="form-group"><label>Gmail Address</label>
+          <div class="input-icon-wrap"><span class="icon">📧</span><input type="email" id="lEmail" placeholder="yourname@gmail.com" autocomplete="email"/></div>
+          <div class="error" id="lErrEmail"></div>
+        </div>
+        <div class="form-group"><label>Password</label>
+          <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+            <input type="password" id="lPass" placeholder="Your password" autocomplete="current-password"/>
+            <button type="button" class="toggle-pass" onclick="tp('lPass',this)">👁️</button>
+          </div>
+          <div class="error" id="lErrPass"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+          <label class="checkbox-row"><input type="checkbox"/> Remember me</label>
+          <a href="#" onclick="switchTab('forgot');return false;" style="font-size:0.8rem;color:var(--ghr-gold);">Forgot password?</a>
+        </div>
+        <button onclick="handleLogin()" class="btn btn-gold btn-block btn-lg" id="loginBtn">Sign In & Vote →</button>
+        <p style="text-align:center;margin-top:0.875rem;font-size:0.8rem;color:var(--text-muted);">
+          No account? <a href="#" onclick="switchTab('register');return false;" style="color:var(--ghr-gold);">Register here →</a>
+        </p>
+      </div>
+
+      <!-- ══ REGISTER (3 steps) ══ -->
+      <div id="pRegister" style="display:none;">
+        <!-- Step bar -->
+        <div class="step-bar">
+          <div class="step-dot active" id="sd1">1</div><div class="step-line" id="sl1"></div>
+          <div class="step-dot" id="sd2">2</div><div class="step-line" id="sl2"></div>
+          <div class="step-dot" id="sd3">✓</div>
+        </div>
+
+        <!-- Step 1: Form -->
+        <div id="rs1">
+          <h2 style="margin-bottom:0.2rem;">Create Account</h2>
+          <p style="margin-bottom:1.25rem;font-size:0.875rem;">OTP will be sent to your Gmail</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group"><label>Full Name *</label>
+              <div class="input-icon-wrap"><span class="icon">👤</span><input type="text" id="rName" placeholder="Ahmed Khan"/></div>
+              <div class="error" id="rEN"></div>
+            </div>
+            <div class="form-group"><label>Student ID *</label>
+              <div class="input-icon-wrap"><span class="icon">🎓</span><input type="text" id="rSid" placeholder="GHRCEM-CS-2021-0042" style="text-transform:uppercase;"/></div>
+              <div class="hint">GHRCEM-DEPT-YEAR-ROLLNO</div>
+              <div class="error" id="rES"></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group"><label>Department *</label>
+              <select id="rDept"><option value="">— Select —</option>
+                <option>Computer Science</option><option>Electrical Engineering</option>
+                <option>Mechanical Engineering</option><option>Business Administration</option>
+                <option>Civil Engineering</option><option>Software Engineering</option>
+              </select><div class="error" id="rED"></div>
+            </div>
+            <div class="form-group"><label>Academic Year *</label>
+              <select id="rYear"><option value="">— Select —</option>
+                <option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option>
+              </select><div class="error" id="rEY"></div>
+            </div>
+          </div>
+          <div class="form-group"><label>Gmail Address *</label>
+            <div class="input-icon-wrap"><span class="icon">📧</span><input type="email" id="rEmail" placeholder="yourname@gmail.com" autocomplete="email"/></div>
+            <div class="hint">6-digit OTP will be sent here</div>
+            <div class="error" id="rEE"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group"><label>Password *</label>
+              <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+                <input type="password" id="rPass" placeholder="Min 8 chars" autocomplete="new-password"/>
+                <button type="button" class="toggle-pass" onclick="tp('rPass',this)">👁️</button>
+              </div><div class="error" id="rEP"></div>
+            </div>
+            <div class="form-group"><label>Confirm *</label>
+              <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+                <input type="password" id="rPass2" placeholder="Repeat" autocomplete="new-password"/>
+                <button type="button" class="toggle-pass" onclick="tp('rPass2',this)">👁️</button>
+              </div><div class="error" id="rEP2"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:1rem;">
+            <div style="height:4px;background:var(--bg-elevated);border-radius:4px;overflow:hidden;"><div id="sBar" style="height:100%;width:0%;background:var(--danger);border-radius:4px;transition:all 0.3s;"></div></div>
+            <div id="sLbl" style="font-size:0.7rem;color:var(--text-muted);margin-top:3px;">Enter a password</div>
+          </div>
+          <label class="checkbox-row" style="margin-bottom:0.875rem;"><input type="checkbox" id="rTerms"/> I agree to the Election Rules & Terms of GH Raisoni University</label>
+          <div class="error" id="rET"></div>
+          <button onclick="sendOTP()" class="btn btn-gold btn-block btn-lg" id="sendOtpBtn">📧 Send OTP to Gmail →</button>
+          <p style="text-align:center;margin-top:0.875rem;font-size:0.8rem;color:var(--text-muted);">Already registered? <a href="#" onclick="switchTab('login');return false;" style="color:var(--ghr-gold);">Login →</a></p>
+        </div>
+
+        <!-- Step 2: OTP entry -->
+        <div id="rs2" style="display:none;text-align:center;">
+          <div style="font-size:2.5rem;margin-bottom:0.75rem;">📬</div>
+          <h3 style="margin-bottom:0.4rem;">Enter Your OTP</h3>
+          <p style="font-size:0.85rem;margin-bottom:0.25rem;">6-digit code sent to:</p>
+          <div style="background:var(--bg-elevated);border:1px solid var(--border-hover);border-radius:var(--r-md);padding:7px 14px;margin:0.6rem auto;display:inline-block;">
+            <strong style="color:var(--ghr-gold);font-size:0.9rem;" id="otpTo">—</strong>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">Type the 6 digits below</p>
+          <div class="otp-inputs">
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o1" oninput="ob(this,1,'o')" onkeydown="ok(event,1,'o')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o2" oninput="ob(this,2,'o')" onkeydown="ok(event,2,'o')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o3" oninput="ob(this,3,'o')" onkeydown="ok(event,3,'o')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o4" oninput="ob(this,4,'o')" onkeydown="ok(event,4,'o')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o5" oninput="ob(this,5,'o')" onkeydown="ok(event,5,'o')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="o6" oninput="ob(this,6,'o')" onkeydown="ok(event,6,'o')"/>
+          </div>
+          <div class="countdown">Expires in <span id="oTimer">10:00</span></div>
+          <div class="error" style="text-align:center;margin:0.4rem 0;" id="oErr"></div>
+          <button onclick="verifyOTP()" class="btn btn-gold btn-block btn-lg" id="verifyBtn" style="margin-top:0.75rem;">✅ Verify & Complete Registration</button>
+          <button onclick="resendOTP()" class="btn btn-ghost btn-block" id="resendBtn" style="margin-top:8px;" disabled>🔄 Resend OTP <span id="resendCD"></span></button>
+          <div style="margin-top:0.875rem;background:rgba(201,162,39,0.05);border:1px solid rgba(201,162,39,0.15);border-radius:var(--r-md);padding:9px 12px;font-size:0.75rem;color:var(--text-muted);text-align:left;">
+            📁 Check <strong>Spam/Junk</strong> if not in inbox · From: <strong style="color:var(--ghr-gold);">VoteChain GH Raisoni</strong>
+          </div>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="rs3" style="display:none;text-align:center;">
+          <div style="font-size:3.5rem;margin-bottom:0.75rem;">🎉</div>
+          <h3 style="color:var(--success);margin-bottom:0.6rem;">Registration Complete!</h3>
+          <p style="font-size:0.875rem;margin-bottom:1rem;">Your account is verified and ready.</p>
+          <div style="background:var(--bg-elevated);border:1px solid rgba(34,197,94,0.3);border-radius:var(--r-lg);padding:1rem;margin-bottom:1.25rem;text-align:left;">
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:3px;">Registered as</div>
+            <div style="font-weight:700;" id="rSuccessName">—</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:8px;margin-bottom:3px;">Student ID</div>
+            <div style="font-weight:700;color:var(--ghr-gold);font-family:monospace;" id="rSuccessSid">—</div>
+          </div>
+          <button onclick="switchTab('login')" class="btn btn-gold btn-block btn-lg">🔐 Login Now →</button>
+        </div>
+      </div>
+
+      <!-- ══ FORGOT PASSWORD ══ -->
+      <div id="pForgot" style="display:none;">
+        <div id="fp1">
+          <h2 style="margin-bottom:0.2rem;">Reset Password</h2>
+          <p style="margin-bottom:1.25rem;font-size:0.875rem;">OTP will be sent to your Gmail</p>
+          <div class="form-group"><label>Gmail Address</label>
+            <div class="input-icon-wrap"><span class="icon">📧</span>
+              <input type="email" id="fpEmail" placeholder="yourname@gmail.com"/>
+            </div>
+            <div class="error" id="fpEE"></div>
+          </div>
+          <button onclick="fpSendOTP()" class="btn btn-gold btn-block btn-lg" id="fpSendBtn">📧 Send OTP →</button>
+          <p style="text-align:center;margin-top:0.875rem;font-size:0.8rem;">
+            <a href="#" onclick="switchTab('login');return false;" style="color:var(--ghr-gold);">← Back to Login</a>
+          </p>
+        </div>
+        <div id="fp2" style="display:none;text-align:center;">
+          <div style="font-size:2rem;margin-bottom:0.75rem;">🔑</div>
+          <h3 style="margin-bottom:0.5rem;">Enter OTP + New Password</h3>
+          <p style="font-size:0.82rem;margin-bottom:0.5rem;">Code sent to: <strong style="color:var(--ghr-gold);" id="fpTo">—</strong></p>
+          <div class="otp-inputs">
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f1" oninput="ob(this,1,'f')" onkeydown="ok(event,1,'f')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f2" oninput="ob(this,2,'f')" onkeydown="ok(event,2,'f')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f3" oninput="ob(this,3,'f')" onkeydown="ok(event,3,'f')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f4" oninput="ob(this,4,'f')" onkeydown="ok(event,4,'f')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f5" oninput="ob(this,5,'f')" onkeydown="ok(event,5,'f')"/>
+            <input class="otp-box" maxlength="1" type="text" inputmode="numeric" id="f6" oninput="ob(this,6,'f')" onkeydown="ok(event,6,'f')"/>
+          </div>
+          <div class="countdown">Expires in <span id="fpTimer">10:00</span></div>
+          <div class="error" style="text-align:center;margin:0.4rem 0;" id="fpOE"></div>
+          <div style="margin-top:1rem;text-align:left;">
+            <div class="form-group"><label>New Password</label>
+              <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+                <input type="password" id="fpNP" placeholder="Min 8 characters"/>
+                <button type="button" class="toggle-pass" onclick="tp('fpNP',this)">👁️</button>
+              </div><div class="error" id="fpPE"></div>
+            </div>
+            <div class="form-group"><label>Confirm Password</label>
+              <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+                <input type="password" id="fpNP2" placeholder="Repeat password"/>
+                <button type="button" class="toggle-pass" onclick="tp('fpNP2',this)">👁️</button>
+              </div><div class="error" id="fpP2E"></div>
+            </div>
+          </div>
+          <button onclick="fpReset()" class="btn btn-gold btn-block btn-lg" id="fpResetBtn">🔐 Reset Password</button>
+        </div>
+        <div id="fp3" style="display:none;text-align:center;">
+          <div style="font-size:3.5rem;margin-bottom:0.75rem;">✅</div>
+          <h3 style="color:var(--success);margin-bottom:0.75rem;">Password Reset!</h3>
+          <p style="margin-bottom:1.25rem;font-size:0.875rem;">Login with your new password now.</p>
+          <button onclick="switchTab('login')" class="btn btn-gold btn-block btn-lg">🔐 Login Now →</button>
+        </div>
+      </div>
+
+      <!-- ══ ADMIN ══ -->
+      <div id="pAdmin" style="display:none;">
+        <h2 style="margin-bottom:0.2rem;">Admin Login</h2>
+        <p style="margin-bottom:1.25rem;font-size:0.875rem;">Restricted — GH Raisoni election admin only</p>
+        <div style="background:rgba(201,162,39,0.07);border:1px solid rgba(201,162,39,0.2);border-radius:var(--r-md);padding:10px 14px;margin-bottom:1.25rem;font-size:0.78rem;">
+          <strong style="color:var(--ghr-gold);">Demo:</strong> ID: <code>GHRCEM-ADMIN</code> · Pass: <code>ghrstu@2025</code> · Key: <code>GHRCEM#KEY</code>
+        </div>
+        <div class="form-group"><label>Admin ID</label>
+          <div class="input-icon-wrap"><span class="icon">⚙️</span><input type="text" id="aId" placeholder="GHRCEM-ADMIN"/></div>
+          <div class="error" id="aEI"></div>
+        </div>
+        <div class="form-group"><label>Password</label>
+          <div class="input-icon-wrap" style="position:relative;"><span class="icon">🔒</span>
+            <input type="password" id="aPass" placeholder="Admin password"/>
+            <button type="button" class="toggle-pass" onclick="tp('aPass',this)">👁️</button>
+          </div><div class="error" id="aEP"></div>
+        </div>
+        <div class="form-group"><label>Secret Key</label>
+          <div class="input-icon-wrap" style="position:relative;"><span class="icon">🗝️</span>
+            <input type="password" id="aKey" placeholder="Secret key"/>
+            <button type="button" class="toggle-pass" onclick="tp('aKey',this)">👁️</button>
+          </div><div class="error" id="aEK"></div>
+        </div>
+        <span class="badge badge-warning" style="margin-bottom:1rem;display:inline-block;">⚠️ Admin access is monitored</span>
+        <button onclick="doAdmin()" class="btn btn-primary btn-block btn-lg">🔐 Admin Sign In →</button>
+      </div>
+
+    </div><!-- end right inner -->
+    <p style="text-align:center;margin-top:1.5rem;font-size:0.75rem;color:var(--text-muted);">
+      <a href="index.html" style="color:var(--text-muted);">← Back to Home</a>
+    </p>
+  </div><!-- end auth-right -->
+</div><!-- end auth-page -->
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="app.js"></script>
+<script>
+/* =================================================================
+   VoteChain Login Page — All logic
+   ================================================================= */
+const ADMIN = { id:'GHRCEM-ADMIN', pass:'ghrstu@2025', key:'GHRCEM#KEY' };
+let RD = {}; // registration data
+let oTmr, fpTmr, rTmr;
+
+// ── Tab switch ──────────────────────────────────────────────
+function switchTab(tab) {
+  ['pLogin','pRegister','pForgot','pAdmin'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = 'none';
+  });
+  const panels = { login:'pLogin', register:'pRegister', forgot:'pForgot', admin:'pAdmin' };
+  const p = document.getElementById(panels[tab]); if(p) p.style.display = 'block';
+  const tmap = { login:'t1', register:'t2', admin:'t3' };
+  ['t1','t2','t3'].forEach(id => {
+    const b = document.getElementById(id); if(!b) return;
+    b.style.background = 'none'; b.style.color = 'var(--text-muted)';
+  });
+  if(tmap[tab]) {
+    const b = document.getElementById(tmap[tab]);
+    if(b) { b.style.background = 'var(--grad-brand)'; b.style.color = 'white'; }
+  }
+}
+
+// ── Helpers ─────────────────────────────────────────────────
+const clr = (...ids) => ids.forEach(id => { const e=document.getElementById(id); if(e) e.textContent=''; });
+const err = (id, msg) => { const e=document.getElementById(id); if(e) e.textContent='⚠ '+msg; };
+const btn = (id, html, d=false) => { const b=document.getElementById(id); if(b){b.innerHTML=html; b.disabled=d;} };
+function tp(id, b) { const e=document.getElementById(id); e.type=e.type==='password'?'text':'password'; b.textContent=e.type==='password'?'👁️':'🙈'; }
+
+// OTP box navigation
+function ob(el, n, p) {
+  el.value = el.value.replace(/\D/g,'');
+  el.classList.toggle('filled', !!el.value);
+  if(el.value && n < 6) document.getElementById(p+String(n+1)).focus();
+}
+function ok(e, n, p) {
+  if(e.key==='Backspace' && !document.getElementById(p+n).value && n>1)
+    document.getElementById(p+String(n-1)).focus();
+}
+function getOTP(p) { let o=''; for(let i=1;i<=6;i++) o+=(document.getElementById(p+i)?.value||''); return o; }
+function clrOTP(p) { for(let i=1;i<=6;i++){const e=document.getElementById(p+i);if(e){e.value='';e.classList.remove('filled','shake');}} }
+function shakeOTP(p) { for(let i=1;i<=6;i++){const e=document.getElementById(p+i);if(e){e.classList.add('shake');setTimeout(()=>e.classList.remove('shake'),500);}} }
+
+// Countdown
+function startTimer(elId, onExpire, secs=600) {
+  let tmr; let r=secs;
+  tmr = setInterval(()=>{
+    r--; const m=Math.floor(r/60), s=r%60;
+    const e=document.getElementById(elId);
+    if(e) e.textContent=m+':'+(s<10?'0':'')+s;
+    if(r<=0){clearInterval(tmr);if(onExpire)onExpire();}
+  },1000);
+  return tmr;
+}
+
+// Resend cooldown
+function startResend() {
+  const rb=document.getElementById('resendBtn'), sp=document.getElementById('resendCD');
+  rb.disabled=true; let t=60;
+  clearInterval(rTmr);
+  rTmr=setInterval(()=>{t--;if(sp)sp.textContent='('+t+'s)';if(t<=0){clearInterval(rTmr);rb.disabled=false;if(sp)sp.textContent='';}},1000);
+}
+
+// Step indicator
+function setStep(s) {
+  for(let i=1;i<=3;i++){
+    const d=document.getElementById('sd'+i);if(!d)continue;
+    d.classList.remove('active','done');
+    if(i<s)d.classList.add('done');
+    if(i===s)d.classList.add('active');
+  }
+  for(let i=1;i<=2;i++){
+    const l=document.getElementById('sl'+i);if(l)l.classList.toggle('done',i<s);
+  }
+}
+
+// Password strength
+document.getElementById('rPass')?.addEventListener('input',function(){
+  let s=0,p=this.value;
+  if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;
+  const c=['','var(--danger)','var(--warning)','var(--warning)','var(--success)','var(--success)'];
+  const l=['Enter a password','Weak','Fair','Good','Strong','Very Strong'];
+  const b=document.getElementById('sBar'),lb=document.getElementById('sLbl');
+  if(b){b.style.width=(s/5*100)+'%';b.style.background=c[s]||'var(--danger)';}
+  if(lb){lb.textContent=l[s]||'';lb.style.color=c[s]||'var(--text-muted)';}
+});
+document.getElementById('rSid')?.addEventListener('input',function(){const p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p,p);});
+
+// ═══════════════════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════════════════
+async function handleLogin() {
+  clr('lErrEmail','lErrPass');
+  const eb = document.getElementById('loginErr'); if(eb) eb.style.display='none';
+  const email = document.getElementById('lEmail').value.trim().toLowerCase();
+  const pass  = document.getElementById('lPass').value.trim();
+  if(!email){err('lErrEmail','Email required.');return;}
+  if(!pass) {err('lErrPass','Password required.');return;}
+  btn('loginBtn','⏳ Signing in...',true);
+  try {
+    const r = await fetch(window.API+'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const d = await r.json();
+    if(!r.ok){
+      btn('loginBtn','Sign In & Vote →',false);
+      if(d.message?.includes('password')) err('lErrPass',d.message);
+      else { if(eb){eb.textContent=d.message;eb.style.display='block';} }
+      return;
+    }
+    sessionStorage.setItem('ghrstu_user',JSON.stringify({name:d.profile.name,id:d.profile.studentId,dept:d.profile.dept,role:'student'}));
+    showToast('success','Login Successful!','Welcome, '+d.profile.name+'!');
+    setTimeout(()=>window.location.href='vote.html',1400);
+  } catch(ex) {
+    btn('loginBtn','Sign In & Vote →',false);
+    if(eb){eb.textContent='Cannot connect to server. Make sure "npm run dev" is running.';eb.style.display='block';}
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// REGISTER — Step 1: Send OTP
+// ═══════════════════════════════════════════════════════════════
+async function sendOTP() {
+  clr('rEN','rES','rED','rEY','rEE','rEP','rEP2','rET');
+  const name  = document.getElementById('rName').value.trim();
+  const sid   = document.getElementById('rSid').value.trim().toUpperCase();
+  const dept  = document.getElementById('rDept').value;
+  const year  = document.getElementById('rYear').value;
+  const email = document.getElementById('rEmail').value.trim().toLowerCase();
+  const pass  = document.getElementById('rPass').value;
+  const pass2 = document.getElementById('rPass2').value;
+  const terms = document.getElementById('rTerms').checked;
+  let ok=true;
+  if(!name) {err('rEN','Full name required.');ok=false;}
+  if(!sid)  {err('rES','Student ID required.');ok=false;}
+  else if(!/^GHRCEM-[A-Z]+-\d{4}-\d{3,5}$/i.test(sid)){err('rES','Format: GHRCEM-DEPT-YEAR-ROLLNO');ok=false;}
+  if(!dept) {err('rED','Select department.');ok=false;}
+  if(!year) {err('rEY','Select year.');ok=false;}
+  if(!email){err('rEE','Gmail required.');ok=false;}
+  else if(!email.endsWith('@gmail.com')){err('rEE','Use a Gmail address.');ok=false;}
+  if(!pass) {err('rEP','Password required.');ok=false;}
+  else if(pass.length<8){err('rEP','Min 8 characters.');ok=false;}
+  if(pass!==pass2){err('rEP2','Passwords do not match.');ok=false;}
+  if(!terms){err('rET','Agree to terms.');ok=false;}
+  if(!ok) return;
+  RD = {name,sid,dept,year,email,password:pass};
+  btn('sendOtpBtn','⏳ Sending OTP...',true);
+  try {
+    const r = await fetch(window.API+'/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,type:'register'})});
+    const d = await r.json();
+    if(!r.ok){btn('sendOtpBtn','📧 Send OTP to Gmail →',false);err('rEE',d.message||'Failed.');return;}
+    document.getElementById('otpTo').textContent = email;
+    document.getElementById('rs1').style.display = 'none';
+    document.getElementById('rs2').style.display = 'block';
+    setStep(2); clrOTP('o');
+    oTmr = startTimer('oTimer',()=>err('oErr','OTP expired. Resend.'));
+    startResend();
+    setTimeout(()=>document.getElementById('o1').focus(),200);
+    showToast('success','OTP Sent!','Check your Gmail inbox.');
+  } catch(ex) {
+    btn('sendOtpBtn','📧 Send OTP to Gmail →',false);
+    err('rEE','Cannot connect to server. Is npm run dev running?');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// REGISTER — Step 2: Verify OTP
+// ═══════════════════════════════════════════════════════════════
+async function verifyOTP() {
+  clr('oErr');
+  const otp = getOTP('o');
+  if(otp.length<6){err('oErr','Enter all 6 digits.');return;}
+  btn('verifyBtn','⏳ Verifying...',true);
+  try {
+    // 1. Verify OTP
+    const vr = await fetch(window.API+'/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:RD.email,otp})});
+    const vd = await vr.json();
+    if(!vr.ok){btn('verifyBtn','✅ Verify & Complete Registration',false);shakeOTP('o');err('oErr',vd.message||'Incorrect OTP.');return;}
+    // 2. Register
+    const rr = await fetch(window.API+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({studentId:RD.sid,name:RD.name,dept:RD.dept,year:RD.year,email:RD.email,password:RD.password})});
+    const rd = await rr.json();
+    if(!rr.ok){btn('verifyBtn','✅ Verify & Complete Registration',false);err('oErr',rd.message||'Registration failed.');return;}
+    clearInterval(oTmr);
+    document.getElementById('rs2').style.display='none';
+    document.getElementById('rs3').style.display='block';
+    document.getElementById('rSuccessName').textContent=RD.name;
+    document.getElementById('rSuccessSid').textContent=RD.sid;
+    setStep(3);
+    showToast('success','Registration Complete!','Welcome to VoteChain!');
+  } catch(ex){btn('verifyBtn','✅ Verify & Complete Registration',false);err('oErr','Server error. Is npm run dev running?');}
+}
+
+async function resendOTP() {
+  clr('oErr');clrOTP('o');btn('resendBtn','⏳ Sending...',true);
+  try {
+    const r=await fetch(window.API+'/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:RD.email,name:RD.name,type:'register'})});
+    const d=await r.json();
+    if(!r.ok){err('oErr',d.message);btn('resendBtn','🔄 Resend OTP',false);return;}
+    clearInterval(oTmr);
+    oTmr=startTimer('oTimer',()=>err('oErr','OTP expired.'));
+    startResend();
+    setTimeout(()=>document.getElementById('o1').focus(),200);
+    showToast('success','OTP Resent!','Check Gmail again.');
+  } catch(ex){err('oErr','Failed. Is server running?');btn('resendBtn','🔄 Resend OTP',false);}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FORGOT PASSWORD
+// ═══════════════════════════════════════════════════════════════
+async function fpSendOTP() {
+  clr('fpEE');
+  const email=document.getElementById('fpEmail').value.trim().toLowerCase();
+  if(!email){err('fpEE','Email required.');return;}
+  if(!email.endsWith('@gmail.com')){err('fpEE','Enter your Gmail.');return;}
+  btn('fpSendBtn','⏳ Sending...',true);
+  try {
+    const r=await fetch(window.API+'/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,type:'reset'})});
+    const d=await r.json();
+    if(!r.ok){btn('fpSendBtn','📧 Send OTP →',false);err('fpEE',d.message||'Failed.');return;}
+    document.getElementById('fpTo').textContent=email;
+    document.getElementById('fp1').style.display='none';
+    document.getElementById('fp2').style.display='block';
+    clrOTP('f');
+    fpTmr=startTimer('fpTimer',()=>err('fpOE','OTP expired.'));
+    setTimeout(()=>document.getElementById('f1').focus(),200);
+    showToast('success','OTP Sent!','Check your Gmail.');
+  } catch(ex){btn('fpSendBtn','📧 Send OTP →',false);err('fpEE','Cannot connect to server.');}
+}
+
+async function fpReset() {
+  clr('fpOE','fpPE','fpP2E');
+  const email=document.getElementById('fpEmail').value.trim().toLowerCase();
+  const otp=getOTP('f');
+  const np=document.getElementById('fpNP').value;
+  const np2=document.getElementById('fpNP2').value;
+  if(otp.length<6){err('fpOE','Enter all 6 digits.');return;}
+  if(!np||np.length<8){err('fpPE','Min 8 characters.');return;}
+  if(np!==np2){err('fpP2E','Passwords do not match.');return;}
+  btn('fpResetBtn','⏳ Verifying...',true);
+  try {
+    const vr=await fetch(window.API+'/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp})});
+    const vd=await vr.json();
+    if(!vr.ok){btn('fpResetBtn','🔐 Reset Password',false);shakeOTP('f');err('fpOE',vd.message||'Incorrect OTP.');return;}
+    const rr=await fetch(window.API+'/reset-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,newPassword:np})});
+    const rd=await rr.json();
+    if(!rr.ok){btn('fpResetBtn','🔐 Reset Password',false);err('fpPE',rd.message||'Reset failed.');return;}
+    clearInterval(fpTmr);
+    document.getElementById('fp2').style.display='none';
+    document.getElementById('fp3').style.display='block';
+    showToast('success','Password Reset!','Login with your new password.');
+  } catch(ex){btn('fpResetBtn','🔐 Reset Password',false);err('fpOE','Server error.');}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════════════════════
+function doAdmin() {
+  clr('aEI','aEP','aEK');
+  const id=document.getElementById('aId').value.trim();
+  const pass=document.getElementById('aPass').value.trim();
+  const key=document.getElementById('aKey').value.trim();
+  let ok=true;
+  if(!id){err('aEI','Required.');ok=false;}
+  if(!pass){err('aEP','Required.');ok=false;}
+  if(!key){err('aEK','Required.');ok=false;}
+  if(!ok) return;
+  if(id!==ADMIN.id){err('aEI','Invalid Admin ID.');return;}
+  if(pass!==ADMIN.pass){err('aEP','Incorrect password.');return;}
+  if(key!==ADMIN.key){err('aEK','Invalid secret key.');return;}
+  sessionStorage.setItem('ghrstu_user',JSON.stringify({name:'GHR Admin',id:'GHRCEM-ADMIN',role:'admin'}));
+  showToast('success','Admin Authenticated','Redirecting...');
+  setTimeout(()=>window.location.href='admin.html',1400);
+}
+</script>
+</body>
+</html>

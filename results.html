@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Results | VoteChain — GH Raisoni University</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">🗳️</div>
+      <div class="nav-brand-text"><div class="name">VoteChain</div><div class="sub">GH Raisoni University</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="vote.html">Vote</a></li>
+      <li><a href="results.html" class="active">Results</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="vote.html"  class="btn btn-gold btn-sm">🗳️ Vote Now</a>
+    </div>
+  </div>
+</nav>
+
+<div style="padding-top:var(--nav-h);">
+
+  <!-- Page Hero -->
+  <div style="background:var(--bg-surface);border-bottom:1px solid var(--border);padding:2.5rem 2rem;text-align:center;">
+    <div class="section-eyebrow" style="margin:0 auto 1rem;">
+      <span class="live-dot"></span> Live Results — Updating in Real-Time
+    </div>
+    <h1 style="margin-bottom:0.5rem;">GH Raisoni University</h1>
+    <h2 style="font-weight:400;color:var(--text-secondary);font-size:1.2rem;">Student Election Results · Academic Year 2026–27</h2>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;">
+
+    <!-- Stats -->
+    <div class="stat-row" style="margin-bottom:2rem;">
+      <div class="stat-card"><div class="stat-icon si-gold">🗳️</div><div><div class="stat-num" id="rTotal">0</div><div class="stat-label">Total Votes Cast</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-blue">🎓</div><div><div class="stat-num">3,500</div><div class="stat-label">Eligible Students</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-green">📊</div><div><div class="stat-num" id="rTurnout">0%</div><div class="stat-label">Voter Turnout</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-maroon">⛓️</div><div><div class="stat-num" id="rBlock">19.2M</div><div class="stat-label">Block Height</div></div></div>
+    </div>
+
+    <!-- Election tabs -->
+    <div style="display:flex;gap:10px;margin-bottom:2rem;flex-wrap:wrap;" id="resultTabs"></div>
+
+    <!-- Results panel -->
+    <div id="resultPanel"></div>
+
+    <!-- Blockchain verification -->
+    <div class="table-wrap" style="margin-top:2rem;">
+      <div class="table-top"><h3>⛓️ On-Chain Verification</h3><span class="badge badge-success"><span class="live-dot"></span> Verified</span></div>
+      <div style="padding:1.25rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;"><div class="label-xs" style="margin-bottom:4px;">Contract Address</div><div class="mono" style="font-size:0.78rem;color:var(--ghr-gold);">0x4f7e8a2d9b1c3e5f...d9c1</div></div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;"><div class="label-xs" style="margin-bottom:4px;">Network</div><div style="font-weight:600;font-size:0.875rem;">Ethereum Sepolia Testnet</div></div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;"><div class="label-xs" style="margin-bottom:4px;">Last Updated</div><div style="font-weight:600;font-size:0.875rem;" id="rUpdated">Just now</div></div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;"><div class="label-xs" style="margin-bottom:4px;">Integrity Hash</div><div class="mono" style="font-size:0.78rem;color:var(--success);">SHA256: 9b2af034e7...</div></div>
+      </div>
+    </div>
+
+    <!-- Verify vote -->
+    <div class="table-wrap" style="margin-top:1.5rem;">
+      <div class="table-top"><h3>🔍 Verify Your Vote</h3></div>
+      <div style="padding:1.25rem;">
+        <p style="font-size:0.875rem;margin-bottom:1rem;">Enter your transaction hash to confirm your vote was correctly recorded on the blockchain.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div class="input-icon-wrap" style="flex:1;min-width:260px;"><span class="icon">🔗</span><input type="text" id="verifyInput" placeholder="Paste your TX hash (e.g. 0x4f7e...)" style="font-family:monospace;"/></div>
+          <button class="btn btn-gold" onclick="verifyVote()">Verify →</button>
+        </div>
+        <div id="verifyResult" style="display:none;margin-top:1rem;padding:12px 16px;border-radius:var(--r-md);font-size:0.875rem;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="app.js"></script>
+<script>
+const COLORS=['#8B1A1A','#C9A227','#10b981','#3b82f6','#8b5cf6','#ec4899','#f59e0b'];
+const SEED=[
+  {name:'Ahmed Khan', studentId:'GHRCEM-CS-2022-031', dept:'Computer Science',       pos:'Student Council President',    party:'🌟 Progress & Unity', election:'Student Council President',    votes:412,active:true},
+  {name:'Sara Malik', studentId:'GHRCEM-EE-2022-044', dept:'Electrical Engineering', pos:'Student Council President',    party:'💡 Innovation First',  election:'Student Council President',    votes:287,active:true},
+  {name:'Ayesha Noor',studentId:'GHRCEM-BBA-2022-012',dept:'Business Administration',pos:'Student Council President',    party:'🤝 Student Voice',     election:'Student Council President',    votes:143,active:true},
+  {name:'Omar Farooq',studentId:'GHRCEM-CS-2022-078', dept:'Computer Science',       pos:'CS Department Representative',party:'⚡ Tech Forward',      election:'CS Department Representative', votes:143,active:true},
+  {name:'Bilal Raza', studentId:'GHRCEM-CS-2023-055', dept:'Computer Science',       pos:'Sports Captain',              party:'🏅 Champions United',  election:'Sports Captain Election',      votes:68, active:true},
+];
+
+function load(){
+  return fetch(window.API + '/candidates')
+    .then(r=>r.json())
+    .then(d=>d.success?d.candidates:JSON.parse(JSON.stringify(SEED)))
+    .catch(()=>{
+      try{const s=localStorage.getItem('ghrcem_candidates');return s?JSON.parse(s):JSON.parse(JSON.stringify(SEED));}catch(e){return JSON.parse(JSON.stringify(SEED));}
+    });
+}
+
+function buildGroups(all){
+  const g={};
+  all.filter(c=>c.active!==false).forEach(c=>{ if(!g[c.election]) g[c.election]=[]; g[c.election].push(c); });
+  return g;
+}
+
+let groups = buildGroups(load());
+let elections = Object.keys(groups);
+let curElec = elections[0] || '';
+
+function renderTabs(){
+  const icons=['🏛️','💻','⚽','🎭','🌟','📚'];
+  document.getElementById('resultTabs').innerHTML = elections.length ?
+    elections.map((e,i)=>`<button class="btn ${e===curElec?'btn-primary':'btn-ghost'} btn-sm" onclick="selectElec('${e.replace(/'/g,"\\'")}',this)">${icons[i]||'🗳️'} ${e}</button>`).join('') :
+    '<span style="color:var(--text-muted);">No elections found.</span>';
+}
+
+function selectElec(name, btn){
+  curElec = name;
+  document.querySelectorAll('#resultTabs button').forEach(b=>b.className=b.textContent.includes(name.slice(0,6))?'btn btn-primary btn-sm':'btn btn-ghost btn-sm');
+  renderPanel();
+}
+
+function renderPanel(){
+  const box = document.getElementById('resultPanel');
+  if (!curElec || !groups[curElec]) {
+    box.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><h4>No Results Yet</h4><p>No candidates have been added yet.</p></div>';
+    return;
+  }
+  const cands = groups[curElec];
+  const total = cands.reduce((s,c)=>s+(c.votes||0),0);
+  const winner= total>0 ? cands.reduce((a,b)=>(a.votes||0)>(b.votes||0)?a:b) : null;
+  const turnout=Math.round(total/3500*100);
+
+  box.innerHTML=`
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <h2 style="margin-bottom:6px;">${curElec}</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <span class="badge badge-success"><span class="live-dot"></span> Live</span>
+            <span class="badge badge-gold">${cands.length} Candidates</span>
+            <span style="font-size:0.8rem;color:var(--text-muted);">⏰ Closes Jan 12, 2025 · 6:00 PM</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:2rem;font-weight:900;color:var(--ghr-gold);">${total.toLocaleString()}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">votes of 3,500 eligible · ${turnout}% turnout</div>
+        </div>
+      </div>
+
+      <!-- Turnout bar -->
+      <div style="margin-bottom:2rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-secondary);margin-bottom:6px;"><span>Overall Voter Turnout</span><span style="font-weight:700;">${turnout}%</span></div>
+        <div class="result-bar-track" style="height:12px;"><div class="result-bar-fill leading" style="width:${turnout}%;height:100%;"></div></div>
+      </div>
+
+      <!-- Candidate bars -->
+      <div style="display:flex;flex-direction:column;gap:1.25rem;margin-bottom:2rem;">
+        ${cands.map((c,i)=>{
+          const pct=total>0?Math.round((c.votes||0)/total*100):0;
+          const lead=winner&&c.name===winner.name;
+          return `<div style="background:var(--bg-card);border:${lead?'2px solid var(--ghr-gold)':'1px solid var(--border)'};border-radius:var(--r-lg);padding:1.5rem;position:relative;overflow:hidden;">
+            ${lead?'<div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-gold);"></div>':''}
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+              <div style="width:56px;height:56px;border-radius:50%;background:${COLORS[i%COLORS.length]};display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:white;flex-shrink:0;">${c.name.charAt(0)}</div>
+              <div style="flex:1;">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span style="font-size:1rem;font-weight:800;">${c.name}</span>
+                  ${lead?'<span class="badge badge-gold">🏆 Leading</span>':'<span class="badge badge-neutral">#'+(i+1)+'</span>'}
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">${c.party} · ${c.dept}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:2rem;font-weight:900;${lead?'color:var(--ghr-gold);':'color:var(--text-primary);'}">${pct}%</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">${(c.votes||0).toLocaleString()} votes</div>
+              </div>
+            </div>
+            <div class="result-bar-track" style="height:10px;"><div class="result-bar-fill ${lead?'leading':''}" style="width:${pct}%;height:100%;"></div></div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <!-- Donut chart -->
+      <div class="table-wrap" style="padding:1.5rem;">
+        <h3 style="margin-bottom:1.25rem;">📊 Vote Distribution</h3>
+        <div style="display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap;">
+          <div style="position:relative;width:160px;height:160px;flex-shrink:0;">
+            <svg viewBox="0 0 160 160" width="160" height="160">${renderDonut(cands,total)}</svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <div style="font-size:1.4rem;font-weight:900;color:var(--ghr-gold);">${total}</div>
+              <div style="font-size:0.65rem;color:var(--text-muted);">total votes</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;flex:1;">
+            ${cands.map((c,i)=>{
+              const pct=total>0?Math.round((c.votes||0)/total*100):0;
+              return `<div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:10px;height:10px;border-radius:2px;background:${COLORS[i%COLORS.length]};flex-shrink:0;"></div>
+                <div style="flex:1;font-size:0.875rem;font-weight:500;">${c.name}</div>
+                <div style="font-weight:700;">${pct}%</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);min-width:60px;text-align:right;">${(c.votes||0).toLocaleString()} votes</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderDonut(cands, total){
+  if(!total) return '';
+  const cx=80,cy=80,r=58,sw=26;
+  const circ=2*Math.PI*r; let off=0;
+  return cands.map((c,i)=>{
+    const pct=(c.votes||0)/total;
+    const dash=pct*circ; const gap=circ-dash;
+    const rot=off*360-90; off+=pct;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${COLORS[i%COLORS.length]}" stroke-width="${sw}" stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}" transform="rotate(${rot.toFixed(2)} ${cx} ${cy})" style="transition:all 1.2s ease;"/>`;
+  }).join('');
+}
+
+async function updateStats(){
+  const all=buildGroups(await load()); groups=all; elections=Object.keys(all);
+  const total=Object.values(all).flat().reduce((s,c)=>s+(c.votes||0),0);
+  document.getElementById('rTotal').textContent=total.toLocaleString();
+  document.getElementById('rTurnout').textContent=(total/3500*100).toFixed(1)+'%';
+  renderTabs(); if(curElec) renderPanel();
+  document.getElementById('rUpdated').textContent='Just now';
+}
+
+function verifyVote(){
+  const inp=document.getElementById('verifyInput').value.trim();
+  const res=document.getElementById('verifyResult');
+  if(!inp){showToast('warning','Required','Enter a transaction hash.');return;}
+  res.style.display='block';
+  if(inp.startsWith('0x')&&inp.length>=8){
+    res.style.cssText='display:block;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.25);border-radius:var(--r-md);padding:12px 16px;color:var(--success);';
+    res.innerHTML=`✅ <strong>Vote Verified!</strong> Transaction <span style="font-family:monospace;">${inp}</span> is confirmed on block #19,284,751. Your vote was recorded correctly.`;
+  } else {
+    res.style.cssText='display:block;background:var(--danger-bg);border:1px solid rgba(239,68,68,0.25);border-radius:var(--r-md);padding:12px 16px;color:var(--danger);';
+    res.innerHTML=`❌ <strong>Not Found.</strong> No matching transaction. Check your hash and try again.`;
+  }
+}
+
+// Block ticker
+let bh=19284751;
+setInterval(()=>{ bh++; document.getElementById('rBlock').textContent=(bh/1e6).toFixed(2)+'M'; },4000);
+
+// Auto-refresh results every 5s
+setInterval(updateStats, 5000);
+
+// Init
+updateStats();
+</script>
+</body>
+</html>

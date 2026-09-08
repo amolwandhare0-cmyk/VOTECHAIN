@@ -1,0 +1,23 @@
+{
+  "name": "ghrstu-votechain",
+  "version": "1.0.0",
+  "description": "GH Raisoni University Decentralized Voting System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev":   "nodemon server.js"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "bcryptjs":   "^2.4.3",
+    "cors":       "^2.8.5",
+    "dotenv":     "^16.4.5",
+    "express":    "^4.18.3",
+    "nodemailer": "^6.9.13"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
