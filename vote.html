@@ -177,8 +177,8 @@ function buildElections(all){
   return Object.values(g);
 }
 
-let allCandidates = loadAll();
-let elections     = buildElections(allCandidates);
+let allCandidates = [];
+let elections     = [];
 let curIdx        = 0;
 let selIdx        = null;
 let voteState     = loadVotes();

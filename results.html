@@ -107,9 +107,9 @@ function buildGroups(all){
   return g;
 }
 
-let groups = buildGroups(load());
-let elections = Object.keys(groups);
-let curElec = elections[0] || '';
+let groups = {};
+let elections = [];
+let curElec = '';
 
 function renderTabs(){
   const icons=['🏛️','💻','⚽','🎭','🌟','📚'];
@@ -225,6 +225,7 @@ function renderDonut(cands, total){
 
 async function updateStats(){
   const all=buildGroups(await load()); groups=all; elections=Object.keys(all);
+  if (!curElec && elections.length > 0) curElec = elections[0];
   const total=Object.values(all).flat().reduce((s,c)=>s+(c.votes||0),0);
   document.getElementById('rTotal').textContent=total.toLocaleString();
   document.getElementById('rTurnout').textContent=(total/3500*100).toFixed(1)+'%';
